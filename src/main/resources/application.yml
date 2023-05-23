@@ -1,0 +1,66 @@
+server:
+  port: ${SKT_MS_QUEUER_PORT:9835}
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: skt-ms-queuer
+  zipkin:
+    base-url: ${ZIPKIN_URL:http://localhost:9910}
+    locator:
+      discovery:
+        enabled: true
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration
+
+
+eureka:
+  config:
+    import: optional:file:.env[.properties]
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8707/eureka/}
+
+custom-config:
+  logs-uri: ${LOGS_URI}
+
+keycloak:
+  config:
+    import: optional:file:.env[.properties]
+  realm: ${REALM_KEYCLOAK}
+  auth-server-url: ${URL_KEYCLOAK:http://localhost:8080}
+  autodetect-bearer-only: true
+  ssl-required: none
+  resource: ${RESOURCE_KEYCLOAK}
+  credentials:
+    secret: ${SECRET_CREDENTIAL_KEYCLOAK}
+  use-resource-role-mappings: false
+  security-constraints:
+    - auth-roles:
+        - USER
+      security-collections:
+        - name: SOME USER SERVICE
+          methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+          patterns:
+            - /api/v1/emaila/*
+
+cloud:
+  aws:
+    region:
+      static: ${AWS_QUEUE_REGION_STATIC}
+      auto: false
+    credentials:
+      access-key: ${AWS_QUEUE_ACCESS_KEY}
+      secret-key: ${AWS_QUEUE_SECRET_KEY}
+    end-point:
+      #uri: https://sqs.us-west-2.amazonaws.com/463809809787/skt-queue-message
+      uri: ${AWS_QUEUE_URL}
