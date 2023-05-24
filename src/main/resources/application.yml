@@ -42,7 +42,7 @@ keycloak:
   use-resource-role-mappings: false
   security-constraints:
     - auth-roles:
-        - USER
+        - can_send_email
       security-collections:
         - name: SOME USER SERVICE
           methods:
