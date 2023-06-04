@@ -15,6 +15,24 @@ import org.springframework.web.bind.annotation.RestController
 class MessageOrderController @Autowired constructor(
     private val awsQueueBl: AwsQueueBl
 ){
+    /*
+    POST /api/v1/email/order
+    request body:
+    {
+      orderId: String,
+      userMail: String,
+      userName: String,
+      statusCode: SKT-200
+    }
+
+    EXAMPLE:
+    {
+      "orderId": "456789-98749",
+      "userMail": "alan.zarate@ucb.edu.bo",
+      "userName": "lanplay",
+      "statusCode": "SKT-200"
+    }
+     */
     @PostMapping("/order")
     fun sendOrderEmail(
         @RequestBody body: MessageOrderDto,
